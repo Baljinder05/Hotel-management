@@ -1,175 +1,265 @@
-#include<iostream.h>
-#include<conio.h>
-#include<string.h>
-#include<stdio.h>
-#include<process.h>
-
-class hotel
-{
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+ 
+using namespace std;
+ 
+// Create class for hotel data.
+class Hotel {
 public:
-int mobile,rno;
-char name[10],gen;
-char bs[10],ds[10];
-
-void accept()
-{
-cout<<"\n Enter your Name:";
-cin>>name;
-cout<<"\n Enter Your Mobile Number:";
-cin>>mobile;
-cout<<"\n Enter your Gender(M/F)";
-cin>>gen;
-cout<<"\n Enter a Type Of Room:";
-cin>>bs;
-cout<<"\n Enter Room Price To Have:";
-cin>>ds;
-}
-
-void display()
-{
-cout<<"\n Name="<<name;
-cout<<"\n mobile="<<mobile;
-cout<<"\n Gender="<<gen;
-cout<<"\n Type of Room="<<bs;
-cout<<"\n Room Price To Have="<<ds;
-}
+    string name;
+    int roomAvl;
+    string location;
+    int rating;
+    int pricePr;
 };
-
-class second:public hotel
-{
+ 
+// Create class for user data.
+class User : public Hotel {
 public:
-
-void accept1()
-{
-cout<<"\n Ac Rooms";
-cout<<"\n from 1-31";
-cout<<"\n Starting from Rooms 10000rs";
-cout<<"\n*****************************";
-cout<<"\n Non-Ac Rooms";
-cout<<"\n from 32-45";
-cout<<"\n Starting from Rooms 5000rs";
-cout<<"\n******************************";
-cout<<"\n Luxury Rooms";
-cout<<"\n from 46-60";
-cout<<"\n Starting from Rooms 20000rs";
-cout<<"\n******************************";
-cout<<"\n Ordinary Rooms";
-cout<<"\n from 61-75";
-cout<<"\n Starting from Rooms 2000rs";
-cout<<"\n******************************";
-cout<<"\n regular rooms";
-cout<<"\n from 76-100";
-cout<<"\n Starting from Rooms 1000rs";
-cout<<"\n******************************";
-}
+    string uname;
+    int uId;
+    int cost;
 };
-
-void main()
+ 
+// Function to Sort Hotels by
+// Bangalore location
+bool sortByBan(Hotel& A, Hotel& B)
 {
-second s;
-int ch,a[10],n,i,b,flag=0,acc,c,p;
-char ch1,ch2,ch3;
-do
-{
-clrscr();
-cout<<"\n \n \t \t \t Taj Hotel";
-cout<<"\n Main Menu:";
-cout<<"\n  1.Room Details";
-cout<<"\n  2.Booking A Room.";
-cout<<"\n  3.Edit Records.";
-cout<<"\n  4.Room Canceling.";
-cout<<"\n  5.Exit.";
-cout<<"\n Enter your Choice";
-cin>>ch;
-
-switch(ch)
-{
-case 1:
-       cout<<"\n \t \t\t ---Room Details---";
-       s.accept1();
-       break;
-case 2:
-       cout<<"\n \t \t \t Booking a Room: ";
-       cout<<"\n \t Enter Number of Rooms To Reserve:";
-       cin>>n;
-       s.rno=1;
-       for(i=0;i<n;i++)
-       {
-	s.accept();
-	s.display();
-       cout<<"\n \t \t  ---Your Room is Booked---";
-
-       cout<<"\n Room No is:"<<s.rno;
-       s.rno++;
-       p=s.rno;
-       if(s.mobile<=10||s.mobile>=60)
-	 cout<<"\n \t \t ---Your Room is Booked---";
-	 }
-       break;
-case 3:
-       cout<<"\n \t \t \t Change your Rooms details:";
-       cout<<"\n Enter Your Room Number";
-       cin>>c;
-       s.rno--;
-       for(i=0;i<n;i++)
-       {
-       if(s.rno==c)
-       {
-       flag=1;
-       }
-       else
-       {
-       flag=0;
-       s.rno--;
-       }
-       }
-       if(flag==1)
-       {
-       s.accept();
-       cout<<"\n \t \t \t Your Room Information Has been Changed.";
-       s.display();
-       }
-       else
-       {
-       cout<<"\n **Wrong Room Number**";
-       s.rno--;
-       }
-       break;
-case 4:
-       cout<<"\n \t \t \t Room cancel: ";
-       cout<<"\n Enter Your Room Number";
-       cin>>b;
-       p--;
-       for(i=0;i<n;i++)
-       {
-       if(p==b)
-       {
-       flag=1;
-       }
-       else
-       {
-       flag=0;
-       p--;
-       }
-       }
-       if(flag==1)
-       {
-       cout<<"\n Your Room is Cancel.";
-       cout<<"\n Enter Your Bank Account Number:";
-       cin>>acc;
-       cout<<"\n --your Payment Transfer directly in  your bank account.--";
-       }
-       else
-       {
-       cout<<"\n **Wrong Room Number**";
-       p--;
-       }
-       break;
-case 5:
-       exit(0);
+    return A.name > B.name;
 }
-cout<<"\n Do you want to enter another Choice(y/n)";
-ch3=getche();
-}while(ch3=='y');
-getch();
+ 
+// Function to sort hotels
+// by rating.
+bool sortByr(Hotel& A, Hotel& B)
+{
+    return A.rating > B.rating;
+}
+ 
+// Function to sort hotels
+// by rooms availability.
+bool sortByRoomAvailable(Hotel& A,
+                        Hotel& B)
+{
+    return A.roomAvl < B.roomAvl;
+}
+ 
+// Print hotels data.
+void PrintHotelData(vector<Hotel> hotels)
+{
+    cout << "PRINT HOTELS DATA:" << endl;
+    cout << "HotelName"
+         << "   "
+         << "Room Available"
+         << "    "
+         << "Location"
+         << "    "
+         << "Rating"
+         << "    "
+         << "PricePer Room:" << endl;
+ 
+    for (int i = 0; i < 3; i++) {
+        cout << hotels[i].name
+             << "          "
+             << hotels[i].roomAvl
+             << "              "
+             << hotels[i].location
+             << "       "
+             << hotels[i].rating
+             << "            "
+             << hotels[i].pricePr
+             << endl;
+    }
+    cout << endl;
+}
+ 
+// Sort Hotels data by name.
+void SortHotelByName(vector<Hotel> hotels)
+{
+    cout << "SORT BY NAME:" << endl;
+ 
+    std::sort(hotels.begin(), hotels.end(),
+              sortByBan);
+ 
+    for (int i = 0; i < hotels.size(); i++) {
+        cout << hotels[i].name << " "
+             << hotels[i].roomAvl << " "
+             << hotels[i].location << " "
+             << hotels[i].rating << " "
+             << " " << hotels[i].pricePr
+             << endl;
+    }
+    cout << endl;
+}
+ 
+// Sort Hotels by rating
+void SortHotelByRating(vector<Hotel> hotels)
+{
+    cout << "SORT BY A RATING:" << endl;
+ 
+    std::sort(hotels.begin(),
+              hotels.end(), sortByr);
+ 
+    for (int i = 0; i < hotels.size(); i++) {
+        cout << hotels[i].name << " "
+             << hotels[i].roomAvl << " "
+             << hotels[i].location << " "
+             << hotels[i].rating << " "
+             << " " << hotels[i].pricePr
+             << endl;
+    }
+    cout << endl;
+}
+ 
+// Print Hotels for any city Location.
+void PrintHotelBycity(string s,
+                      vector<Hotel> hotels)
+{
+    cout << "HOTELS FOR " << s
+         << " LOCATION IS:"
+         << endl;
+    for (int i = 0; i < hotels.size(); i++) {
+ 
+        if (hotels[i].location == s) {
+ 
+            cout << hotels[i].name << " "
+                 << hotels[i].roomAvl << " "
+                 << hotels[i].location << " "
+                 << hotels[i].rating << " "
+                 << " " << hotels[i].pricePr
+                 << endl;
+        }
+    }
+    cout << endl;
+}
+ 
+// Sort hotels by room Available.
+void SortByRoomAvailable(vector<Hotel> hotels)
+{
+    cout << "SORT BY ROOM AVAILABLE:" << endl;
+ 
+    std::sort(hotels.begin(), hotels.end(),
+              sortByRoomAvailable);
+ 
+    for (int i = hotels.size() - 1; i >= 0; i--) {
+ 
+        cout << hotels[i].name << " "
+             << hotels[i].roomAvl << " "
+             << hotels[i].location << " "
+             << hotels[i].rating << " "
+             << " " << hotels[i].pricePr
+             << endl;
+    }
+    cout << endl;
+}
+ 
+// Print the user's data
+void PrintUserData(string userName[],
+                   int userId[],
+                   int bookingCost[],
+                   vector<Hotel> hotels)
+{
+ 
+    vector<User> user;
+    User u;
+ 
+    // Access user data.
+    for (int i = 0; i < 3; i++) {
+        u.uname = userName[i];
+        u.uId = userId[i];
+        u.cost = bookingCost[i];
+        user.push_back(u);
+    }
+ 
+    // Print User data.
+    cout << "PRINT USER BOOKING DATA:"
+         << endl;
+    cout << "UserName"
+         << " "
+         << "UserID"
+         << " "
+         << "HotelName"
+         << " "
+         << "BookingCost" << endl;
+ 
+    for (int i = 0; i < user.size(); i++) {
+        cout << user[i].uname
+             << "         "
+             << user[i].uId
+             << "        "
+             << hotels[i].name
+             << "         "
+             << user[i].cost
+             << endl;
+    }
+}
+ 
+// Functiont to solve
+// Hotel Management problem
+void HotelManagement(string userName[],
+                     int userId[],
+                     string hotelName[],
+                     int bookingCost[],
+                     int rooms[],
+                     string locations[],
+                     int ratings[],
+                     int prices[])
+{
+    // Initialize arrays that stores
+    // hotel data and user data
+    vector<Hotel> hotels;
+ 
+    // Create Objects for
+    // hotel and user.
+    Hotel h;
+ 
+    // Initialise the data
+    for (int i = 0; i < 3; i++) {
+        h.name = hotelName[i];
+        h.roomAvl = rooms[i];
+        h.location = locations[i];
+        h.rating = ratings[i];
+        h.pricePr = prices[i];
+        hotels.push_back(h);
+    }
+    cout << endl;
+ 
+    // Call the various operations
+    PrintHotelData(hotels);
+    SortHotelByName(hotels);
+    SortHotelByRating(hotels);
+    PrintHotelBycity("Bangalore",
+                     hotels);
+    SortByRoomAvailable(hotels);
+    PrintUserData(userName,
+                  userId,
+                  bookingCost,
+                  hotels);
+}
+ 
+// Driver Code.
+int main()
+{
+ 
+    // Initialize variables to stores
+    // hotels data and user data.
+    string userName[] = { "Ux", "U2", "U3" };
+    int userId[] = { 2, 3, 4 };
+    string hotelName[] = { "H1", "H2", "H3" };
+    int bookingCost[] = { 1000, 1200, 1100 };
+    int rooms[] = { 4, 5, 6 };
+    string locations[] = { "Bangalore",
+                           "Bangalore",
+                           "Mumbai" };
+    int ratings[] = { 5, 5, 3 };
+    int prices[] = { 100, 200, 100 };
+ 
+    // Function to perform operations
+    HotelManagement(userName, userId,
+                    hotelName, bookingCost,
+                    rooms, locations,
+                    ratings, prices);
+ 
+    return 0;
 }
